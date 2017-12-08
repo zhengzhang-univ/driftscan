@@ -1240,6 +1240,7 @@ class BeamTransfer(object):
         svnum, svbounds = self._svd_num(mi)
 
         # Get the SVD beam matrix
+        print "Calling SVD matrix for m", mi
         beam = self.beam_ut(mi)
 
         # Create the output matrix (shape is calculated from input shape)
@@ -1247,7 +1248,7 @@ class BeamTransfer(object):
 
         # Should it be a +=?
         for fi in self._svd_freq_iter(mi):
-
+            print "frequency", fi 
             noise = self.telescope.noisepower(np.arange(self.telescope.npairs), fi).flatten()
             noise = np.concatenate([noise, noise])
 
@@ -1257,7 +1258,9 @@ class BeamTransfer(object):
             # As the form of the forward projection is simply a scaling and then
             # projection onto an orthonormal basis, the pseudo-inverse is simply
             # related.
-            vecf[fi, :] = noise * np.dot(fbeam.T.conj(), lvec)
+            # vecf[fi, :] = noise * np.dot(fbeam.T.conj(), lvec)
+            ut_pinv = la.pinv(fbeam)
+            vecf[fi, :] = np.dot(ut_pinv, lvec)
 
         return vecf.reshape(self.nfreq, 2, self.telescope.npairs)
 
