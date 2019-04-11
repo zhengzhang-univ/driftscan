@@ -808,7 +808,7 @@ def simulate(m, outdir, maps=[], ndays=None, resolution=0, seed=None, **kwargs):
     if ndays > 0:
 
         # Fetch the noise powerspectrum
-        noise_ps = tel.noisepower(np.arange(tel.npairs)[:, np.newaxis], np.array(local_freq)[np.newaxis, :], ndays=ndays).reshape(tel.npairs, lfreq)[:, :, np.newaxis]
+        noise_ps = tel.noisepower(np.arange(tel.npairs)[:, np.newaxis], np.array(local_freq, dtype=int)[np.newaxis, :], ndays=ndays).reshape(tel.npairs, lfreq)[:, :, np.newaxis]
 
 
         # Seed random number generator to give consistent noise

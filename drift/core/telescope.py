@@ -163,7 +163,7 @@ class TransitTelescope(config.Reader, ctime.Observer):
     freq_upper = config.Property(proptype=float, default=800.0)
     num_freq = config.Property(proptype=int, default=50)
 
-    tsys_flat = config.Property(proptype=float, default=50.0, key='tsys')
+    tsys_flat = config.Property(proptype=float, default=50.0)
     ndays = config.Property(proptype=int, default=733)
 
     accuracy_boost = config.Property(proptype=float, default=1.0)
@@ -318,8 +318,8 @@ class TransitTelescope(config.Reader, ctime.Observer):
 
     def calculate_frequencies(self):
 
-        #self._frequencies = np.linspace(self.freq_lower, self.freq_upper, self.num_freq)
-        self._frequencies = self.freq_lower + (np.arange(self.num_freq) + 0.5) * ((self.freq_upper - self.freq_lower) / self.num_freq)
+        # self._frequencies = np.linspace(self.freq_lower, self.freq_upper, self.num_freq)
+        self._frequencies = self.freq_lower + (np.arange(self.num_freq) + 0.5) * ((self.freq_upper - self.freq_lower) / float(self.num_freq))
 
     @property
     def wavelengths(self):
@@ -590,10 +590,12 @@ class TransitTelescope(config.Reader, ctime.Observer):
 
         # Fetch the set of lmax's for the baselines (in order to reduce time
         # regenerating Healpix maps)
-        lmax, mmax = np.ceil(self.l_boost * np.array(max_lm(self.baselines[bl_indices], self.wavelengths[f_indices], self.u_width, self.v_width))).astype(np.int64)
+        lmax, mmax = np.ceil(self.l_boost * np.array(max_lm(self.baselines[bl_indices], self.wavelengths[f_indices.astype(int)], self.u_width, self.v_width))).astype(np.int64)
         #lmax, mmax = lmax * self.l_boost, mmax * self.l_boost
         # Set the size of the (l,m) array to write into
         lside = self.lmax if global_lmax else lmax.max()
+
+        lmax = np.full_like(lmax, self.lmax) # CHANGED
 
         # Generate the array for the Transfer functions
 
@@ -680,7 +682,7 @@ class TransitTelescope(config.Reader, ctime.Observer):
         if f_indices is None:
             freq = self.frequencies
         else:
-            freq = self.frequencies[f_indices]
+            freq = self.frequencies[f_indices.astype(int)]
         return np.ones_like(freq) * self.tsys_flat
 
 
