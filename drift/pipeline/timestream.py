@@ -518,14 +518,19 @@ class Timestream(object):
 
         fisher, bias = ps.fisher_bias()
 
-        powerspectrum =  np.dot(la.inv(fisher), qtotal - bias)
+        # powerspectrum =  np.dot(la.inv(fisher), qtotal - bias)
+        # powerspectrum = la.lstsq(fisher, qtotal - bias, cond=1e-8)[0]
+        powerspectrum =  np.dot(la.pinv(fisher), qtotal - bias)
 
 
         if mpiutil.rank0:
             with h5py.File(self._psfile, 'w') as f:
 
 
-                cv = la.inv(fisher)
+                # cv = la.inv(fisher)
+                # cv = la.lstsq(fisher, np.eye(*fisher.shape))[0]
+                cv = la.pinv(fisher)
+
                 err = cv.diagonal()**0.5
                 cr = cv / np.outer(err, err)
 
