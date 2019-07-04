@@ -220,8 +220,8 @@ class PipelineManager(config.Reader):
                 print "Generating SVD map (%s)" % tsname
                 tsobj.mapmake_svd(self.nside, 'map_svd.hdf5')
 
-                print "Generating full map (%s)" % tsname
-                tsobj.mapmake_full(self.nside, 'map_full.hdf5')
+                # print "Generating full map (%s)" % tsname
+                # tsobj.mapmake_full(self.nside, 'map_full.hdf5')
 
 
 
