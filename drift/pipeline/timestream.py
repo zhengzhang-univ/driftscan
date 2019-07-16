@@ -165,7 +165,10 @@ class Timestream(object):
             tstream[lfi] = self.timestream_f(fi)
 
         # FFT to calculate the m-modes for the timestream
-        row_mmodes = np.fft.fft(tstream, axis=-1) / self.ntime
+        if tstream.size > 0:
+            row_mmodes = np.fft.fft(tstream, axis=-1) / self.ntime
+        else:
+            row_mmodes =  np.zeros(tstream.shape, tstream.dtype)
 
         ## Combine positive and negative m parts.
         row_mpairs = np.zeros((lfreq, 2, tel.npairs, mmax+1), dtype=np.complex128)
@@ -836,8 +839,11 @@ def simulate(m, outdir, maps=[], ndays=None, resolution=0, seed=None, **kwargs):
 
 
     # Fourier transform m-modes back to get timestream.
-    vis_stream = np.fft.ifft(col_vis, axis=-1) * ntime
-    vis_stream = vis_stream.reshape(tel.npairs, lfreq, ntime)
+    if col_vis.size > 0:
+        vis_stream = np.fft.ifft(col_vis, axis=-1) * ntime
+        vis_stream = vis_stream.reshape(tel.npairs, lfreq, ntime)
+    else:
+        vis_stream = np.array((tel.npairs, lfreq, ntime), dtype=col_vis.dtype)
 
     # The time samples the visibility is calculated at
     tphi = np.linspace(0, 2*np.pi, ntime, endpoint=False)
