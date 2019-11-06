@@ -321,9 +321,7 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
     def calculate_frequencies(self):
 
         # self._frequencies = np.linspace(self.freq_lower, self.freq_upper, self.num_freq)
-        self._frequencies = self.freq_lower + (np.arange(self.num_freq) + 0.5) * (
-            (self.freq_upper - self.freq_lower) / self.num_freq
-        )
+        self._frequencies = self.freq_lower + (np.arange(self.num_freq) + 0.5) * ((self.freq_upper - self.freq_lower) / float(self.num_freq))
 
     @property
     def wavelengths(self):
@@ -595,18 +593,8 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
 
         # Fetch the set of lmax's for the baselines (in order to reduce time
         # regenerating Healpix maps)
-        lmax, mmax = np.ceil(
-            self.l_boost
-            * np.array(
-                max_lm(
-                    self.baselines[bl_indices],
-                    self.wavelengths[f_indices],
-                    self.u_width,
-                    self.v_width,
-                )
-            )
-        ).astype(np.int64)
-        # lmax, mmax = lmax * self.l_boost, mmax * self.l_boost
+        lmax, mmax = np.ceil(self.l_boost * np.array(max_lm(self.baselines[bl_indices], self.wavelengths[f_indices.astype(int)], self.u_width, self.v_width))).astype(np.int64)
+        #lmax, mmax = lmax * self.l_boost, mmax * self.l_boost
         # Set the size of the (l,m) array to write into
         lside = self.lmax if global_lmax else lmax.max()
 
