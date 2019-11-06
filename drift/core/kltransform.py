@@ -118,16 +118,23 @@ def eigh_gen(A, B):
                 evals, evecs = la.eigh(A, B, overwrite_a=True, overwrite_b=True)
 
             else:
-                print "Strange convergence issue. Trying non divide and conquer routine."
+                print(
+                    "Strange convergence issue. Trying non divide and conquer routine."
+                )
                 try:
-                    evals, evecs = la.eigh(A, B, overwrite_a=True, overwrite_b=True, turbo=False)
+                    evals, evecs = la.eigh(
+                        A, B, overwrite_a=True, overwrite_b=True, turbo=False
+                    )
                 except la.LinAlgError:
                     # Nothing works
                     evb = la.eigvalsh(B)
-                    print np.log10(evb[0])
-                    print np.log10(evb[-1])
-                    print "Assuming null eigenspace"
-                    evals, evecs = np.zeros(A.shape[0], dtype=A.dtype), np.zeros(A.shape, dtype=A.dtype)
+                    print(np.log10(evb[0]))
+                    print(np.log10(evb[-1]))
+                    print("Assuming null eigenspace")
+                    evals, evecs = (
+                        np.zeros(A.shape[0], dtype=A.dtype),
+                        np.zeros(A.shape, dtype=A.dtype),
+                    )
 
     return evals, evecs, add_const
 
