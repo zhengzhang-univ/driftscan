@@ -126,10 +126,6 @@ def eigh_gen(A, B):
                         A, B, overwrite_a=True, overwrite_b=True, turbo=False
                     )
                 except la.LinAlgError:
-                    # Nothing works
-                    evb = la.eigvalsh(B)
-                    print(np.log10(evb[0]))
-                    print(np.log10(evb[-1]))
                     print("Assuming null eigenspace")
                     evals, evecs = (
                         np.zeros(A.shape[0], dtype=A.dtype),
