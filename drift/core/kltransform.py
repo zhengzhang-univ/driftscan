@@ -104,7 +104,8 @@ def eigh_gen(A, B):
 
             errno = int(mo.group(1))
 
-            if errno < (A.shape[0] + 1):
+            if False:
+            # if errno < (A.shape[0] + 1):
 
                 print(
                     "Matrix probably not positive definite due to numerical issues. \
