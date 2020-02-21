@@ -349,12 +349,6 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
 
     def calculate_frequencies(self):
 
-<<<<<<< variant A
-        # self._frequencies = np.linspace(self.freq_lower, self.freq_upper, self.num_freq)
-        self._frequencies = self.freq_lower + (np.arange(self.num_freq) + 0.5) * (
-            (self.freq_upper - self.freq_lower) / float(self.num_freq)
-        )
->>>>>>> variant B
         if self.freq_lower or self.freq_upper:
             import warnings
 
@@ -401,7 +395,6 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
 
         # TODO: do something with the channel width `df` as well
         self._frequencies = frequencies
-======= end
 
     @property
     def wavelengths(self):
@@ -418,8 +411,6 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
     # ======== Properties related to the feeds ==========
 
     @property
-<<<<<<< variant A
->>>>>>> variant B
     def input_index(self):
         """Override to add custom labelling of the inputs, e.g. serial numbers.
 
@@ -434,7 +425,6 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
         return np.array(np.arange(self.nfeed), dtype=[("chan_id", "u2")])
 
     @property
-======= end
     def nfeed(self):
         """The number of feeds."""
         return self.feedpositions.shape[0]
@@ -695,11 +685,7 @@ class TransitTelescope(with_metaclass(abc.ABCMeta, config.Reader, ctime.Observer
             * np.array(
                 max_lm(
                     self.baselines[bl_indices],
-<<<<<<< variant A
-                    self.wavelengths[f_indices.astype(int)],
->>>>>>> variant B
                     self.wavelengths[f_indices],
-======= end
                     self.u_width,
                     self.v_width,
                 )
@@ -1038,8 +1024,6 @@ class PolarisedTelescope(with_metaclass(abc.ABCMeta, TransitTelescope)):
 
     _npol_sky_ = 4
 
-<<<<<<< variant A
->>>>>>> variant B
     @property
     def polarisation(self):
         """
@@ -1052,7 +1036,6 @@ class PolarisedTelescope(with_metaclass(abc.ABCMeta, TransitTelescope)):
         """
         raise NotImplementedError("`polarisation` must be implemented.")
 
-======= end
     def _beam_map_single(self, bl_index, f_index):
 
         p_stokes = [
@@ -1149,26 +1132,14 @@ class SimplePolarisedTelescope(with_metaclass(abc.ABCMeta, PolarisedTelescope)):
     """
 
     @property
-<<<<<<< variant A
-    def polarization(self):
->>>>>>> variant B
     def polarisation(self):
-======= end
         """
-<<<<<<< variant A
-        Polarization map.
->>>>>>> variant B
         Polarisation map.
-======= end
 
         Returns
         -------
-<<<<<<< variant A
-        np.ndarray : One-dimensional array with the polarization for each feed ('x' or 'y').
->>>>>>> variant B
         pol : np.ndarray
             One-dimensional array with the polarization for each feed ('X' or 'Y').
-======= end
         """
         return np.asarray(
             ["X" if feed % 2 == 0 else "Y" for feed in self.beamclass], dtype=np.str
