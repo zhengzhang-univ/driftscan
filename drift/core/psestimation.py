@@ -674,7 +674,7 @@ class PSExact(PSEstimation):
             + "/ps_c_m_"
             + util.intpattern(self.telescope.mmax)
             + "_b_"
-            + util.natpattern(len(self.bands) - 1)
+            + util.natpattern(self.nbands - 1)
             + ".hdf5"
         )
 

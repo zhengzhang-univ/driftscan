@@ -688,7 +688,7 @@ class BeamTransfer(object):
             * 16.0
         )
 
-        nodemem = 3.0 * 2 ** 30.0
+        nodemem = 32.0 * 2 ** 30.0
 
         num_fb_per_node = int(nodemem / fbsize)
         num_fb_per_chunk = num_fb_per_node * mpiutil.size
